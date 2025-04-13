@@ -166,6 +166,11 @@ This design ensures the container can be scaled from local processing to lakehou
 - Should metrics be namespaced (`package/metric`)?
 - Should struct-based layouts be supported now or later?
 - Do we support event data natively or as a separate container?
+- Does `TrackingDataContainer` need to extend from kloppy `Dataset`? It probably should
+- Add a FrameBuilder? (using PyArrow `ArrayBuilder` - not supported in Python yet - see https://github.com/apache/arrow/issues/20529 )
+- Related tickets:
+  - [Refactor serializer options into own component](https://github.com/PySport/kloppy/issues/10) -> Describes a FrameBuilder approach
+  - [Refactor tracking data model](https://github.com/PySport/kloppy/pull/377)
 
 ---
 
