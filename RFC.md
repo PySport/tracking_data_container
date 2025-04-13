@@ -6,6 +6,8 @@ This RFC proposes the creation of a `TrackingDataContainer`: a shared, standardi
 
 The container combines high-performance, zero-copy data access with a rich metadata model, enabling efficient workflows, semantic column selection, and reproducibility. All packages in the ecosystem are expected to use this container as the primary I/O interface.
 
+Note: it should probably extend the `TrackingDataset` from kloppy.
+
 ---
 
 ## Motivation
@@ -46,6 +48,12 @@ Packages access the container via a consistent interface, with optional access t
 
 ```python
 container = kloppy.load_as_container("data.json", "metadata.json")
+
+# or:
+from kloppy import secondspectrum
+container = secondspectrum.load(...normal arguments..., as_container=True)
+
+# or container must be fully backwards compatible (best option)
 
 # Add ball speed
 container.add_metric("ball_speed", expression="sqrt((ball.x - ball.x.shift(1))**2 + ...)", engine="polars")
