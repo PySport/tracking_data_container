@@ -47,13 +47,17 @@ The `TrackingDataContainer` wraps an Apache Arrow table and Kloppy-style metadat
 Packages access the container via a consistent interface, with optional access to Arrow, Polars LazyFrames, or NumPy arrays.
 
 ```python
+
+# Option 1:
 container = kloppy.load_as_container("data.json", "metadata.json")
 
-# or:
+# Option 2:
 from kloppy import secondspectrum
 container = secondspectrum.load(...normal arguments..., as_container=True)
 
-# or container must be fully backwards compatible (best option)
+# Option 3: container is full backwards compatible and can be used in any code that uses TrackingDataset <- Best option!
+from kloppy import secondspectrum
+dataset = secondspectrum.load(...normal arguments...)
 
 # Add ball speed
 container.add_metric("ball_speed", expression="sqrt((ball.x - ball.x.shift(1))**2 + ...)", engine="polars")
