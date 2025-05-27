@@ -213,6 +213,6 @@ Participants included:
 - 🇩🇪 Manuel Bassek (Floodlight)
 - 🇳🇱 Joris Bekkers, Koen de Raad & Koen Vossen (PySport/Kloppy)
 - 🇧🇷 Thiago Costa Porto, Ricardo Furbino (UFMG)
-- 🇰🇷 Hyunsung Kim (ballradar, soccercpd)
+- 🇰🇷 Hyunsung Kim (ballradar, soccercpd, KAIST)
 
 **Feedback welcome!**
