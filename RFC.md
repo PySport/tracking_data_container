@@ -6,13 +6,11 @@ This RFC proposes the creation of a `TrackingDataContainer`: a shared, standardi
 
 The container combines high-performance, zero-copy data access with a rich metadata model, enabling efficient workflows, semantic column selection, and reproducibility. All packages in the ecosystem are expected to use this container as the primary I/O interface.
 
-Note: it should probably extend the `TrackingDataset` from kloppy.
-
 ---
 
 ## Motivation
 
-As tracking pipelines grow across football and other sports, the need for modularity, performance, and inter-package interoperability becomes critical.
+As tracking pipelines grow across football and other sports, the need for modularity, performance, and inter-package interoperability becomes critical. A growing number of open-source packages in football analytics are duplicating functionality across parsing, modeling, and data management. This [comparison spreadsheet](https://docs.google.com/spreadsheets/d/1sfkqxkmtmQkXmkHiuNz-kvBvTLL7UWpCHdLuxW4zAF4/edit?gid=0#gid=0) illustrates overlapping efforts across different research groups and tools. A shared container can reduce fragmentation and foster interoperability.
 
 Current challenges:
 
