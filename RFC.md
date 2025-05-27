@@ -60,7 +60,10 @@ from kloppy import secondspectrum
 dataset = secondspectrum.load(...normal arguments...)
 
 # Add ball speed
-container.add_metric("ball_speed", expression="sqrt((ball.x - ball.x.shift(1))**2 + ...)", engine="polars")
+def ball_speed(ball, **kwargs):
+    return pl.sqrt((ball.x - ball.x.shift(1))**2 + ...)
+
+container.add_column("ball_speed", ball_speed)
 
 # Frame materialization
 frame = container.materialize_frame(timestamp=534.2)
@@ -80,10 +83,15 @@ class TrackingDataContainer:
     def arrow(self) -> pa.Table
     def lazy(self) -> pl.LazyFrame
     def selector: ColumnSelector  # e.g. selector.player("home", 7).x
-    def add_metric(name: str, expression: str | pl.Expr, engine: str)
-    def add_metrics(list_of_exprs: list[pl.Expr])
     def get_column(...)
     def materialize_frame(timestamp: float)
+
+    def add_column(name: str, fn: Callable)
+    def add_column_per_player(name: str, fn: Callable)
+    def add_column_per_position(name: str, fn: Callable)
+    def remove_column(name: str)
+
+    def validate(self) -> boolean
 ```
 
 ### Column Naming Convention
@@ -115,6 +123,7 @@ By adhering to CDF, the `TrackingDataContainer` will be interoperable with other
 - Includes teams, players, field size, orientation, coordinate system
 - Tracks added metrics, including provenance
 - Defines optional logical "layers" (e.g. tracking, skeleton, predictions)
+- Use kloppy Metadata objects
 
 ### Storage & Computation Model
 
@@ -161,6 +170,7 @@ This design ensures the container can be scaled from local processing to lakehou
 - Packages must use `TrackingDataContainer` for I/O
 - Read-only tools may optionally operate on Arrow, if they follow the schema
 - Kloppy will provide `load_as_container(...)` as the default loader
+- TDC should be able go from/to other DataFrame formats like pandas to ensure packages can adopt easily.
 
 ---
 
@@ -175,15 +185,15 @@ This design ensures the container can be scaled from local processing to lakehou
 
 ## Open Questions
 
-- Should metrics be namespaced (`package/metric`)?
+- Should metrics be namespaced (`package/metric`)? => No, TDC doesn't know about metrics, only about columns (maybe we introduce a column type some day?)
 - Should struct-based layouts be supported now or later?
-- Do we support event data natively or as a separate container?
-- Does `TrackingDataContainer` need to extend from kloppy `Dataset`? It probably should
+- Do we support event data natively or as a separate container? => It would be good to sync timestamps somehow, but Arrow table isn't a great fit for event data.
+- Does `TrackingDataContainer` need to extend from kloppy `Dataset`? => No, but we do use the kloppy Metadata. Q: can we use kloppy `to_df`?
 - Add a FrameBuilder? (using PyArrow `ArrayBuilder` - not supported in Python yet - see https://github.com/apache/arrow/issues/20529 )
 - Related tickets:
   - [Refactor serializer options into own component](https://github.com/PySport/kloppy/issues/10) -> Describes a FrameBuilder approach
   - [Refactor tracking data model](https://github.com/PySport/kloppy/pull/377)
-
+- Should TDC support transformations? Probably yes, so a package can ensure all data is in the correct orientation and dimensions. 
 ---
 
 ## Conclusion
@@ -191,5 +201,18 @@ This design ensures the container can be scaled from local processing to lakehou
 The `TrackingDataContainer` provides a shared, fast, and extensible foundation for sports tracking pipelines. It aligns with modern data practices (Arrow), adopts the CDF standard for naming and schema, encourages inter-package reuse, and ensures semantic correctness through enforced metadata.
 
 We propose making this the default container for all tools in the ecosystem.
+
+## Support
+
+We brought together contributors from different open source projects to discuss how we can align our work and improve interoperability in football analytics.
+
+Participants included:
+- 🇧🇪 Pieter Robberechts (soccerdata, socceraction, Kloppy)
+- 🇳🇱 Alexander Oonk (databallpy)
+- 🇯🇵 Keisuke Fujii, Calvin Yeung (OpenSTARLab)
+- 🇩🇪 Manuel Bassek (Floodlight)
+- 🇳🇱 Joris Bekkers, Koen de Raad & Koen Vossen (PySport/Kloppy)
+- 🇧🇷 Thiago Costa Porto, Ricardo Furbino (UFMG)
+- 🇰🇷 Hyunsung Kim (ballradar, soccercpd)
 
 **Feedback welcome!**
