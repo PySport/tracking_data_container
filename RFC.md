@@ -10,12 +10,13 @@ The container combines high-performance, zero-copy data access with a rich metad
 
 ## Motivation
 
-As tracking pipelines grow across football and other sports, the need for modularity, performance, and inter-package interoperability becomes critical. A growing number of open-source packages in football analytics are duplicating functionality across parsing, modeling, and data management. This [comparison spreadsheet](https://docs.google.com/spreadsheets/d/1sfkqxkmtmQkXmkHiuNz-kvBvTLL7UWpCHdLuxW4zAF4/edit?gid=0#gid=0) illustrates overlapping efforts across different research groups and tools. A shared container can reduce fragmentation and foster interoperability.
+As tracking pipelines grow across football and other sports, the need for modularity, performance, and inter-package interoperability becomes critical. A growing number of open-source packages in football analytics are duplicating functionality across parsing, modeling, and data management. This [comparison spreadsheet](https://docs.google.com/spreadsheets/d/1sfkqxkmtmQkXmkHiuNz-kvBvTLL7UWpCHdLuxW4zAF4/edit?gid=0#gid=0) illustrates overlapping efforts across different research groups and tools. 
 
 Current challenges:
 
 - Object-based tracking (e.g. Kloppy) doesn't scale well to large datasets
-- Packages use inconsistent schemas and lack a shared representation
+- Packages use inconsistent schemas, lack a shared representation
+- Development resources are wasted on duplicated functionality for data parsing
 - Derived metrics and transforms aren’t reproducible or shareable
 - Skeleton data, training data, and multi-team use cases need flexibility
 
