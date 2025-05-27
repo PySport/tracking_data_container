@@ -18,7 +18,7 @@ Current challenges:
 - Packages use inconsistent schemas, lack a shared representation
 - Development resources are wasted on duplicated functionality for data parsing
 - Derived metrics and transforms aren’t reproducible or shareable
-- Skeleton data, training data, and multi-team use cases need flexibility
+- Skeleton data, physical data, and multi-team use cases need flexibility
 
 A container backed by Apache Arrow, with enforced metadata and a shared schema, solves these problems while keeping compatibility with modern analytics engines (Polars, DuckDB, etc.).
 
